@@ -210,7 +210,7 @@ return [
          * @warn specify a valid fully qualified class name.
          * @example App\Seeders\AdminSeeder::class
          */
-        'tenants-seed-class' => false,
+        'tenants-seed-class' => TenantDatabaseSeeder::class,
 
         /**
          * Automatically generate a tenants database based on the random id of the

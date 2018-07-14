@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use App\User;
+use App\Shared\Models\User;
 use Hyn\Tenancy\Contracts\Repositories\CustomerRepository;
 use Hyn\Tenancy\Contracts\Repositories\HostnameRepository;
 use Hyn\Tenancy\Contracts\Repositories\WebsiteRepository;
@@ -59,7 +59,7 @@ class CreateTenant extends Command
     
         // we'll create a random secure password for our to-be admin
         $password = str_random();
-        //$this->addAdmin($name, $email, $password);
+        $this->addAdmin($name, $email, $password);
         $this->info("Tenant '{$name}' is created and is now accessible at {$hostname->fqdn}");
         $this->info("Admin {$email} can log in using password {$password}");
     }
@@ -111,6 +111,8 @@ class CreateTenant extends Command
     private function addAdmin($name, $email, $password)
     {
         $admin = User::create(['name' => $name, 'email' => $email, 'password' => Hash::make($password)]);
+        $admin->guard_name = 'web';
+        $admin->assignRole('admin');
         return $admin;
     }
 }
